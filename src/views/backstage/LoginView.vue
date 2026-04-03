@@ -1,7 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <p>this is login view</p>
+  <div class="bg-background text-foreground flex-center min-h-screen">
+
+    <p>this is login view</p>
+  </div>
 </template>
 
 <style scoped></style>

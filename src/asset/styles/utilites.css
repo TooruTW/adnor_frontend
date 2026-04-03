@@ -1,0 +1,13 @@
+@layer utilities{
+    .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .flex-center-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}

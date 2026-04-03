@@ -1,0 +1,10 @@
+@layer base {
+  body {
+    background-color: var(--p-content-background);
+    color: var(--p-text-color);
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+    min-height: 100vh;
+  }
+}
