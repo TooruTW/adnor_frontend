@@ -19,6 +19,7 @@
     "@primeuix/themes": "^2.0.3",
     "@primevue/forms": "^4.5.4",
     "@primevue/icons": "^4.5.4",
+    "@supabase/supabase-js": "^2.101.1",
     "@tailwindcss/vite": "^4.2.2",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",

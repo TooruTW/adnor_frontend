@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Form, type FormSubmitEvent } from '@primevue/forms'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 import Password from 'primevue/password'
+import { signInWithEmailPassword } from '@/api/auth'
 import { LOGIN_TEXT_CONTENTS } from './login/textContents'
 import type { TextContent } from '@/types/TextContentType'
+
+const router = useRouter()
+const submitting = ref(false)
+const authError = ref<string | null>(null)
 
 /** 常見電子郵件格式（regex） */
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -57,12 +63,26 @@ function loginResolver({ values }: { values: Record<string, unknown> }) {
   return { errors }
 }
 
-// 登入表單的提交事件
-function onLoginSubmit(event: FormSubmitEvent) {
+// 登入表單的提交事件（Supabase Email + 密碼）
+async function onLoginSubmit(event: FormSubmitEvent) {
   if (!event.valid) return
-  console.log('[backstage-login]', event.valid)
-  console.log('email', event.states.email?.value)
-  console.log('password', event.states.password?.value)
+  authError.value = null
+  submitting.value = true
+  try {
+    const email = String(event.states.email?.value ?? '')
+    const password = String(event.states.password?.value ?? '')
+    const result = await signInWithEmailPassword(email, password)
+    if (!result.ok) {
+      authError.value = result.message.trim() || textContent.value.LOGIN_FAILED_GENERIC
+      console.log('[backstage-login] 登入失敗', result.message)
+      
+      return
+    }
+    await router.push({ name: 'backstage-home' })
+    console.log('[backstage-login] 登入成功')
+  } finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -78,6 +98,9 @@ function onLoginSubmit(event: FormSubmitEvent) {
           class="flex flex-col gap-4"
           @submit="onLoginSubmit"
         >
+          <Message v-if="authError" severity="error" :closable="false">
+            {{ authError }}
+          </Message>
           <div class="flex flex-col gap-1">
             <label class="text-sm font-medium" for="backstage-email">{{
               textContent.EMAIL_LABEL
@@ -113,7 +136,12 @@ function onLoginSubmit(event: FormSubmitEvent) {
             </Message>
           </div>
 
-          <Button type="submit" :label="textContent.LOGIN_BUTTON" class="w-full" />
+          <Button
+            type="submit"
+            :label="textContent.LOGIN_BUTTON"
+            class="w-full"
+            :loading="submitting"
+          />
         </Form>
       </template>
     </Card>

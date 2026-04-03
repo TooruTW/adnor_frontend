@@ -18,6 +18,7 @@ export const LOGIN_TEXT_CONTENTS: LoginTextByLocale = {
     PLACEHOLDER_PASSWORD: 'Enter your password',
     INVALID_PASSWORD_MESSAGE: 'Password must be at least 8 characters',
     LOGIN_BUTTON: 'Login',
+    LOGIN_FAILED_GENERIC: 'Sign-in failed. Please try again.',
   },
   CHINESE: {
     TITLE: '後台登入',
@@ -28,6 +29,7 @@ export const LOGIN_TEXT_CONTENTS: LoginTextByLocale = {
     PLACEHOLDER_EMAIL: 'you@example.com',
     PLACEHOLDER_PASSWORD: '請輸入密碼',
     LOGIN_BUTTON: '登入',
+    LOGIN_FAILED_GENERIC: '登入失敗，請稍後再試。',
   },
   JAPANESE: {
     TITLE: 'バックステージログイン',
@@ -38,6 +40,7 @@ export const LOGIN_TEXT_CONTENTS: LoginTextByLocale = {
     PLACEHOLDER_EMAIL: 'you@example.com',
     PLACEHOLDER_PASSWORD: 'パスワードを入力してください',
     LOGIN_BUTTON: 'ログイン',
+    LOGIN_FAILED_GENERIC: 'ログインに失敗しました。もう一度お試しください。',
   },
   PORTUGUESE: {
     TITLE: 'Login de Backstage',
@@ -48,5 +51,6 @@ export const LOGIN_TEXT_CONTENTS: LoginTextByLocale = {
     PLACEHOLDER_EMAIL: 'you@example.com',
     PLACEHOLDER_PASSWORD: 'Insira sua senha',
     LOGIN_BUTTON: 'Login',
+    LOGIN_FAILED_GENERIC: 'Falha no login. Tente novamente.',
   },
 }

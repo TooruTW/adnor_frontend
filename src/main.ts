@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config'
 
 import App from './App.vue'
 import router from './router'
+import '@/api/supabaseClient'
 import { auraThemePreset } from '@/config/primevue'
 
 import 'primeicons/primeicons.css'
