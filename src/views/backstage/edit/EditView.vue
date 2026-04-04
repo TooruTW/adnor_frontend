@@ -127,15 +127,41 @@ function chapterCardPt(chapterId: string) {
     </aside>
 
     <main v-if="showDetailCard" class="min-w-0 flex-1">
-      <Card class="h-full min-h-48">
-        <template #title>Chapter</template>
+      <Card class="h-full min-h-48 overflow-y-auto">
+        <template #title>
+          <div class="flex-between">
+            <div>
+              <span class="text-sm font-semibold mr-2">#{{ activeChapter?.chapter_number }}</span>
+              <span class="font-bold text-lg">{{ activeChapter?.chapter_name }}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm text-(--p-text-muted-color) font-medium mb-1 self-end">
+                last updated: {{ activeChapter?.chapter_updated_at }}
+              </span>
+              <span class="text-sm text-(--p-text-muted-color) font-medium">
+                chapter_id: {{ activeChapter?.chapter_id }}
+              </span>
+            </div>
+          </div>
+        </template>
+
         <template #content>
           <template v-if="activeChapter">
-            <p class="text-lg font-medium">chapter_id: {{ activeChapter.chapter_id }}</p>
+            <p class="max-w-150">
+              <span class="font-semibold">description:</span>
+              <br />
+              <span>{{ activeChapter.chapter_description }}</span>
+            </p>
           </template>
           <template v-else>
             <p class="text-(--p-text-muted-color)">無效的 chapter_id：{{ activeChapterId }}</p>
           </template>
+          <div class="gap-4 mt-4 w-full flex-center-column ">
+            <div v-for="page in activeChapter?.chapter_pages" :key="page.page_id" class="p-4 border border-(--p-border-color) rounded-md min-w-100 ">
+              <img src="https://picsum.photos/960/1440" alt="page image" class="w-full h-auto">
+              <span class="text-(--p-text-muted-color)">#{{ page.page_number }}</span>
+            </div>
+          </div>
         </template>
       </Card>
     </main>
