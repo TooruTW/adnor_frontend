@@ -82,7 +82,7 @@ function chapterCardPt(chapterId: string) {
 </script>
 
 <template>
-  <div class="flex flex-1 gap-4 bg-background p-4 text-foreground overflow-hidden">
+  <div class="flex flex-1 gap-4 overflow-hidden p-4">
     <aside class="flex w-64 shrink-0 flex-col gap-2 overflow-y-auto pr-1 h-full">
       <div class="mb-2">
         <Button
@@ -111,7 +111,7 @@ function chapterCardPt(chapterId: string) {
         <template #content>
           <div class="flex flex-col gap-1">
             <p class="mb-1 font-medium">{{ ch.chapter_name }}</p>
-            <p class="text-muted-foreground text-xs self-end">{{ ch.chapter_updated_at }}</p>
+            <p class="text-xs self-end text-(--p-text-muted-color)">{{ ch.chapter_updated_at }}</p>
           </div>
         </template>
       </Card>
@@ -125,7 +125,7 @@ function chapterCardPt(chapterId: string) {
             <p class="text-lg font-medium">chapter_id: {{ activeChapter.chapter_id }}</p>
           </template>
           <template v-else>
-            <p class="text-muted-foreground">無效的 chapter_id：{{ activeChapterId }}</p>
+            <p class="text-(--p-text-muted-color)">無效的 chapter_id：{{ activeChapterId }}</p>
           </template>
         </template>
       </Card>

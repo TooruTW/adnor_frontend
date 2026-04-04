@@ -44,7 +44,9 @@ function changeLanguage(language: string) {
 
 <template>
   <div class="flex h-screen w-full flex-col items-stretch overflow-hidden">
-    <nav class="flex w-full justify-between items-center gap-2 border-b border-border p-3 shrink-0">
+    <nav
+      class="flex-between w-full shrink-0 gap-2 border-b p-3 border-(--p-content-border-color)"
+    >
       <Button
         type="button"
         :label="systemTextContent.TO_FRONTSTAGE"
