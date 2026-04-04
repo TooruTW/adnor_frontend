@@ -43,12 +43,21 @@ function createNewChapter(list: ChapterData[]): ChapterData {
   const maxNum = list.reduce((m, c) => Math.max(m, c.chapter_number), 0)
   const chapter_number = maxNum + 1
   const chapter_updated_at = new Date().toISOString().slice(0, 10)
+  const pageId = crypto.randomUUID()
   return {
     chapter_id: crypto.randomUUID(),
     chapter_number,
     chapter_name: '新章節',
     chapter_description: '',
     chapter_updated_at,
+    chapter_pages: [
+      {
+        page_id: pageId,
+        page_number: 1,
+        page_updated_at: chapter_updated_at,
+        page_isLast: true,
+      },
+    ],
   }
 }
 
