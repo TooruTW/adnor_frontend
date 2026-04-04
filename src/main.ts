@@ -14,7 +14,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(PrimeVue, {
-  ripple: true,
+  ripple: false,
   theme: {
     preset: auraThemePreset,
       options: {

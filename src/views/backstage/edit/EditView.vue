@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
+import ChapterDetailEditCard from './ChapterDetailEditCard.vue'
+import ChapterDetailReadCard from './ChapterDetailReadCard.vue'
 import { FAKE_CHAPTER_DATA_ARRAY, type ChapterData } from './FAKE_DATA'
 
 const route = useRoute()
@@ -10,6 +12,8 @@ const router = useRouter()
 
 const chapters = ref<ChapterData[]>(structuredClone(FAKE_CHAPTER_DATA_ARRAY))
 const activeChapterId = ref<string | null>(null)
+const isEditingDetail = ref(false)
+const draftChapter = ref<ChapterData | null>(null)
 
 function parseQueryChapterId(): string | null {
   const raw = route.query.chapter_id
@@ -19,6 +23,11 @@ function parseQueryChapterId(): string | null {
   return s === '' ? null : s
 }
 
+function discardEdit() {
+  isEditingDetail.value = false
+  draftChapter.value = null
+}
+
 onMounted(() => {
   activeChapterId.value = parseQueryChapterId()
 })
@@ -26,7 +35,11 @@ onMounted(() => {
 watch(
   () => route.query.chapter_id,
   () => {
-    activeChapterId.value = parseQueryChapterId()
+    const next = parseQueryChapterId()
+    if (isEditingDetail.value && next !== activeChapterId.value) {
+      discardEdit()
+    }
+    activeChapterId.value = next
   },
 )
 
@@ -38,6 +51,36 @@ const showDetailCard = computed(() => {
 const activeChapter = computed(() =>
   chapters.value.find((c) => c.chapter_id === activeChapterId.value),
 )
+
+function enterEdit() {
+  const ch = activeChapter.value
+  if (!ch) return
+  draftChapter.value = structuredClone(toRaw(ch))
+  isEditingDetail.value = true
+}
+
+function saveEdit() {
+  if (!draftChapter.value || !activeChapterId.value) return
+  const id = activeChapterId.value
+  const idx = chapters.value.findIndex((c) => c.chapter_id === id)
+  if (idx === -1) return
+  const at = new Date().toISOString().slice(0, 10)
+  const saved = structuredClone(toRaw(draftChapter.value))
+  saved.chapter_updated_at = at
+  chapters.value = chapters.value.map((c, i) => (i === idx ? saved : c))
+  discardEdit()
+}
+
+function confirmDeleteChapter() {
+  if (!activeChapterId.value || !activeChapter.value) return
+  if (!window.confirm('確定要刪除此章節？')) return
+  const id = activeChapterId.value
+  chapters.value = chapters.value.filter((c) => c.chapter_id !== id)
+  discardEdit()
+  const q = { ...route.query } as Record<string, string | string[] | undefined>
+  delete q.chapter_id
+  router.replace({ name: 'backstage-edit', query: q })
+}
 
 function createNewChapter(list: ChapterData[]): ChapterData {
   const maxNum = list.reduce((m, c) => Math.max(m, c.chapter_number), 0)
@@ -62,6 +105,9 @@ function createNewChapter(list: ChapterData[]): ChapterData {
 }
 
 function selectChapter(chapterId: string) {
+  if (isEditingDetail.value && chapterId !== activeChapterId.value) {
+    discardEdit()
+  }
   router.push({
     name: 'backstage-edit',
     query: { ...route.query, chapter_id: chapterId },
@@ -83,7 +129,6 @@ function chapterCardPt(chapterId: string) {
   if (!isSelected(chapterId)) return {}
   return {
     root: {
-      // .p-card 已有 background，單靠 class 常被 Prime 樣式蓋掉；inline style 優先級較高
       style: { backgroundColor: 'var(--p-surface-200)' },
     },
   }
@@ -92,7 +137,7 @@ function chapterCardPt(chapterId: string) {
 
 <template>
   <div class="flex flex-1 gap-4 overflow-hidden p-4">
-    <aside class="flex w-64 shrink-0 flex-col gap-2 overflow-y-auto pr-1 h-full">
+    <aside class="flex h-full w-64 shrink-0 flex-col gap-2 overflow-y-auto pr-1">
       <div class="mb-2">
         <Button
           type="button"
@@ -127,45 +172,23 @@ function chapterCardPt(chapterId: string) {
     </aside>
 
     <main v-if="showDetailCard" class="min-w-0 flex-1">
-      <Card class="h-full min-h-48 overflow-y-auto">
-        <template #title>
-          <div class="flex-between">
-            <div>
-              <span class="text-sm font-semibold mr-2">#{{ activeChapter?.chapter_number }}</span>
-              <span class="font-bold text-lg">{{ activeChapter?.chapter_name }}</span>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-sm text-(--p-text-muted-color) font-medium mb-1 self-end">
-                last updated: {{ activeChapter?.chapter_updated_at }}
-              </span>
-              <span class="text-sm text-(--p-text-muted-color) font-medium">
-                chapter_id: {{ activeChapter?.chapter_id }}
-              </span>
-            </div>
-          </div>
-        </template>
-
+      <ChapterDetailReadCard
+        v-if="activeChapter && !isEditingDetail"
+        :chapter="activeChapter"
+        @edit="enterEdit"
+      />
+      <ChapterDetailEditCard
+        v-else-if="activeChapter && draftChapter"
+        v-model="draftChapter"
+        @save="saveEdit"
+        @discard="discardEdit"
+        @delete="confirmDeleteChapter"
+      />
+      <Card v-else class="h-full min-h-48 overflow-y-auto">
         <template #content>
-          <template v-if="activeChapter">
-            <p class="max-w-150">
-              <span class="font-semibold">description:</span>
-              <br />
-              <span>{{ activeChapter.chapter_description }}</span>
-            </p>
-          </template>
-          <template v-else>
-            <p class="text-(--p-text-muted-color)">無效的 chapter_id：{{ activeChapterId }}</p>
-          </template>
-          <div class="gap-4 mt-4 w-full flex-center-column ">
-            <div v-for="page in activeChapter?.chapter_pages" :key="page.page_id" class="p-4 border border-(--p-border-color) rounded-md min-w-100 ">
-              <img src="https://picsum.photos/960/1440" alt="page image" class="w-full h-auto">
-              <span class="text-(--p-text-muted-color)">#{{ page.page_number }}</span>
-            </div>
-          </div>
+          <p class="text-(--p-text-muted-color)">無效的 chapter_id：{{ activeChapterId }}</p>
         </template>
       </Card>
     </main>
   </div>
 </template>
-
-<style scoped></style>
