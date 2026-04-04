@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import BackstageLayout from '@/views/backstage/BackstageLayout.vue'
+import EditView from '@/views/backstage/edit/EditView.vue'
 import HomeView from '@/views/backstage/HomeView.vue'
 import LoginView from '@/views/backstage/LoginView.vue'
 import FrontstageView from '@/views/frontstage/FrontstageView.vue'
@@ -20,6 +21,7 @@ const router = createRouter({
       children: [
         { path: 'login', name: 'backstage-login', component: LoginView },
         { path: 'home', name: 'backstage-home', component: HomeView },
+        { path: 'edit', name: 'backstage-edit', component: EditView },
       ],
     },
   ],

@@ -13,7 +13,7 @@ function goFrontstage() {
 }
 
 // 系統文字內容
-const systemTextContent = ref<SystemTextContent  >(SYSTEM_TEXT_CONTENT.ENGLISH)
+const systemTextContent = ref<SystemTextContent>(SYSTEM_TEXT_CONTENT.ENGLISH)
 
 // 當網頁加載時，檢查本地儲存的語系，並取得對應的文字內容
 onMounted(() => {
@@ -28,7 +28,8 @@ onMounted(() => {
 // 根據當前語系，取得文字內容
 function getSystemTextContentByLanguage(selectedLanguage: string) {
   if (selectedLanguage && Object.keys(SYSTEM_TEXT_CONTENT).includes(selectedLanguage)) {
-    systemTextContent.value = SYSTEM_TEXT_CONTENT[selectedLanguage as keyof typeof SYSTEM_TEXT_CONTENT]
+    systemTextContent.value =
+      SYSTEM_TEXT_CONTENT[selectedLanguage as keyof typeof SYSTEM_TEXT_CONTENT]
   } else {
     systemTextContent.value = SYSTEM_TEXT_CONTENT.ENGLISH
   }
@@ -42,8 +43,8 @@ function changeLanguage(language: string) {
 </script>
 
 <template>
-  <div class="flex min-h-screen w-full flex-col bg-background text-foreground">
-    <nav class="flex w-full justify-between items-center gap-2 border-b border-border p-3">
+  <div class="flex h-screen w-full flex-col items-stretch overflow-hidden">
+    <nav class="flex w-full justify-between items-center gap-2 border-b border-border p-3 shrink-0">
       <Button
         type="button"
         :label="systemTextContent.TO_FRONTSTAGE"

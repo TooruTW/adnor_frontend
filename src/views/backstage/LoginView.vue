@@ -41,7 +41,7 @@ onMounted(() => {
 })
 // 根據當前語系，取得文字內容
 function getTextContentByLanguage(language: string) {
-    textContent.value = LOGIN_TEXT_CONTENTS[
+  textContent.value = LOGIN_TEXT_CONTENTS[
     language as keyof typeof LOGIN_TEXT_CONTENTS
   ] as TextContent
 }
@@ -75,7 +75,7 @@ async function onLoginSubmit(event: FormSubmitEvent) {
     if (!result.ok) {
       authError.value = result.message.trim() || textContent.value.LOGIN_FAILED_GENERIC
       console.log('[backstage-login] 登入失敗', result.message)
-      
+
       return
     }
     await router.push({ name: 'backstage-home' })
@@ -87,7 +87,7 @@ async function onLoginSubmit(event: FormSubmitEvent) {
 </script>
 
 <template>
-  <div class="bg-background text-foreground flex-center min-h-screen p-4">
+  <div class="flex-center min-h-screen p-4">
     <Card class="w-full max-w-md">
       <template #title>{{ textContent.TITLE }}</template>
       <template #content>
