@@ -4,7 +4,7 @@ import Card from 'primevue/card'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
-import type { ChapterData } from './CONSTANTS/FAKE_DATA'
+import type { ChapterData } from '@/types/ChapterDataType'
 
 const draft = defineModel<ChapterData>({ required: true })
 
@@ -17,17 +17,16 @@ const emit = defineEmits<{
 function normalizeChapterPages(pages: ChapterData['chapter_pages']) {
   pages.forEach((p, i) => {
     p.page_number = i + 1
-    p.page_isLast = i === pages.length - 1
+    p.is_last_of_this_chapter = i === pages.length - 1
   })
 }
 
 function addPage() {
-  const at = new Date().toISOString().slice(0, 10)
   draft.value.chapter_pages.push({
     page_id: crypto.randomUUID(),
     page_number: 0,
-    page_updated_at: at,
-    page_isLast: true,
+    is_last_of_this_chapter: true,
+    page_img_url: '',
   })
   normalizeChapterPages(draft.value.chapter_pages)
 }

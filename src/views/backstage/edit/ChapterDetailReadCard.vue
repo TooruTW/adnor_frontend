@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Card from 'primevue/card'
-import type { ChapterData } from './CONSTANTS/FAKE_DATA'
+import type { ChapterData } from '@/types/ChapterDataType'
 
 defineProps<{
   chapter: ChapterData

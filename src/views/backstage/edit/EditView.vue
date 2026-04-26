@@ -7,7 +7,7 @@ import { useChapterStore } from '@/stores/chapter'
 import AddChapterDialogTrigger from './AddChapterDialogTrigger.vue'
 import ChapterDetailEditCard from './ChapterDetailEditCard.vue'
 import ChapterDetailReadCard from './ChapterDetailReadCard.vue'
-import type { ChapterData } from './CONSTANTS/FAKE_DATA'
+import type { ChapterData } from '@/types/ChapterDataType'
 
 const route = useRoute()
 const router = useRouter()
