@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import Button from 'primevue/button'
 import Card from 'primevue/card'
+import AddChapterDialogTrigger from './AddChapterDialogTrigger.vue'
 import ChapterDetailEditCard from './ChapterDetailEditCard.vue'
 import ChapterDetailReadCard from './ChapterDetailReadCard.vue'
 import { FAKE_CHAPTER_DATA_ARRAY, type ChapterData } from './CONSTANTS/FAKE_DATA'
@@ -82,28 +82,6 @@ function confirmDeleteChapter() {
   router.replace({ name: 'backstage-edit', query: q })
 }
 
-function createNewChapter(list: ChapterData[]): ChapterData {
-  const maxNum = list.reduce((m, c) => Math.max(m, c.chapter_number), 0)
-  const chapter_number = maxNum + 1
-  const chapter_updated_at = new Date().toISOString().slice(0, 10)
-  const pageId = crypto.randomUUID()
-  return {
-    chapter_id: crypto.randomUUID(),
-    chapter_number,
-    chapter_name: '新章節',
-    chapter_description: '',
-    chapter_updated_at,
-    chapter_pages: [
-      {
-        page_id: pageId,
-        page_number: 1,
-        page_updated_at: chapter_updated_at,
-        page_isLast: true,
-      },
-    ],
-  }
-}
-
 function selectChapter(chapterId: string) {
   if (isEditingDetail.value && chapterId !== activeChapterId.value) {
     discardEdit()
@@ -113,12 +91,6 @@ function selectChapter(chapterId: string) {
     query: { ...route.query, chapter_id: chapterId },
   })
   activeChapterId.value = chapterId
-}
-
-function addChapter() {
-  const row = createNewChapter(chapters.value)
-  chapters.value = [row, ...chapters.value]
-  selectChapter(row.chapter_id)
 }
 
 function isSelected(chapterId: string) {
@@ -138,15 +110,7 @@ function chapterCardPt(chapterId: string) {
 <template>
   <div class="flex flex-1 gap-4 overflow-hidden p-4">
     <aside class="flex h-full w-64 shrink-0 flex-col gap-2 overflow-y-auto pr-1">
-      <div class="mb-2">
-        <Button
-          type="button"
-          class="w-full justify-start"
-          label="新增章節"
-          icon="pi pi-plus"
-          @click="addChapter"
-        />
-      </div>
+      <AddChapterDialogTrigger />
       <!-- chapter card detail and operations -->
       <Card
         v-for="ch in chapters"
