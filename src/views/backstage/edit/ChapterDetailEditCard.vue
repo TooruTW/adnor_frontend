@@ -4,6 +4,8 @@ import Card from 'primevue/card'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
+import { ref } from 'vue'
+import ImageUploadDialog from '@/components/ImageUploadDialog.vue'
 import type { ChapterData } from '@/types/ChapterDataType'
 
 const draft = defineModel<ChapterData>({ required: true })
@@ -13,6 +15,7 @@ const emit = defineEmits<{
   discard: []
   delete: []
 }>()
+const isImageUploadDialogVisible = ref(false)
 
 function normalizeChapterPages(pages: ChapterData['chapter_pages']) {
   pages.forEach((p, i) => {
@@ -22,13 +25,7 @@ function normalizeChapterPages(pages: ChapterData['chapter_pages']) {
 }
 
 function addPage() {
-  draft.value.chapter_pages.push({
-    page_id: crypto.randomUUID(),
-    page_number: 0,
-    is_last_of_this_chapter: true,
-    page_img_url: '',
-  })
-  normalizeChapterPages(draft.value.chapter_pages)
+  isImageUploadDialogVisible.value = true
 }
 
 function removePage(pageId: string) {
@@ -112,7 +109,10 @@ function removePage(pageId: string) {
           <Button type="button" label="新增" icon="pi pi-plus" size="small" @click="addPage" />
         </div>
 
-        <div class="grid w-full gap-4 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
+        <div
+          v-if="draft.chapter_pages"
+          class="grid w-full gap-4 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]"
+        >
           <div
             v-for="page in draft.chapter_pages"
             :key="page.page_id"
@@ -120,7 +120,7 @@ function removePage(pageId: string) {
           >
             <div class="min-h-0 flex-1 flex-center">
               <img
-                src="https://picsum.photos/960/1440"
+                :src="page.page_img_url"
                 alt="page image"
                 class="relative z-0 h-auto max-h-[60vh] w-full object-contain"
               />
@@ -138,7 +138,13 @@ function removePage(pageId: string) {
             <span class="relative z-0 text-(--p-text-muted-color)">#{{ page.page_number }}</span>
           </div>
         </div>
+        <div v-else class="text-(--p-text-muted-color)">尚未有頁面</div>
       </div>
     </template>
   </Card>
+  <ImageUploadDialog
+    v-model:visible="isImageUploadDialogVisible"
+    header="上傳頁面圖片"
+    path-prefix="pages"
+  />
 </template>

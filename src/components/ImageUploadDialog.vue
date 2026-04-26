@@ -68,7 +68,25 @@ function onFileChange(event: Event) {
   uploadMessage.value = ''
 }
 
-async function uploadToSupabase() {
+function getChapterIdFromUrl(): string | null {
+  if (typeof window === 'undefined') return null
+  const chapterId = new URL(window.location.href).searchParams.get('chapter_id')
+  if (!chapterId) return null
+  const trimmed = chapterId.trim()
+  return trimmed.length > 0 ? trimmed : null
+}
+
+async function createPageRecordFromUpload(publicUrl: string, chapterId: string) {
+  const { error } = await supabase.from('pages').insert({
+    chapter_id: chapterId,
+    page_number: null,
+    page_img_url: publicUrl,
+  })
+
+  if (error) throw error
+}
+
+async function uploadToSupaBaseStorage() {
   if (!selectedFile.value || isUploading.value) return
   isUploading.value = true
   uploadMessage.value = ''
@@ -85,6 +103,12 @@ async function uploadToSupabase() {
     if (error) throw error
 
     const { data } = supabase.storage.from(props.bucket).getPublicUrl(path)
+    const chapterId = getChapterIdFromUrl()
+    if (!chapterId) {
+      throw new Error('找不到 chapter_id，請確認網址 query 參數')
+    }
+
+    await createPageRecordFromUpload(data.publicUrl, chapterId)
     uploadMessage.value = `上傳成功：${data.publicUrl}`
     emit('uploaded', { path, publicUrl: data.publicUrl })
   } catch (err) {
@@ -139,7 +163,7 @@ onBeforeUnmount(() => {
           icon="pi pi-cloud-upload"
           :disabled="!selectedFile || isUploading"
           :loading="isUploading"
-          @click="uploadToSupabase"
+          @click="uploadToSupaBaseStorage"
         />
         <Button
           type="button"

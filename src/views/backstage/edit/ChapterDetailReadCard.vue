@@ -1,15 +1,37 @@
 <script setup lang="ts">
+import { onMounted, watch } from 'vue'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
+import { useChapterStore } from '@/stores/chapter'
 import type { ChapterData } from '@/types/ChapterDataType'
 
-defineProps<{
+const props = defineProps<{
   chapter: ChapterData
 }>()
 
 const emit = defineEmits<{
   edit: []
 }>()
+
+const chapterStore = useChapterStore()
+
+async function syncChapterPages() {
+  const chapterId = props.chapter.chapter_id
+  if (!chapterId) return
+  await chapterStore.fetchPagesByChapterId(chapterId)
+}
+
+onMounted(async () => {
+  await syncChapterPages()
+})
+
+watch(
+  () => props.chapter.chapter_id,
+  async (nextChapterId, prevChapterId) => {
+    if (!nextChapterId || nextChapterId === prevChapterId) return
+    await chapterStore.fetchPagesByChapterId(nextChapterId)
+  },
+)
 </script>
 
 <template>
@@ -43,7 +65,7 @@ const emit = defineEmits<{
         <span>{{ chapter.chapter_description }}</span>
       </p>
 
-      <div class="gap-4 mt-4 w-full grid grid-cols-2">
+      <div v-if="chapter.chapter_pages && chapter.chapter_pages.length > 0" class="gap-4 mt-4 w-full grid grid-cols-2">
         <div
           v-for="page in chapter.chapter_pages"
           :key="page.page_id"
@@ -51,7 +73,7 @@ const emit = defineEmits<{
         >
           <div class="flex-1 min-h-0 flex-center">
             <img
-              src="https://picsum.photos/960/1440"
+              :src="page.page_img_url"
               alt="page image"
               class="h-full object-contain"
             />
@@ -59,6 +81,7 @@ const emit = defineEmits<{
           <div class="text-(--p-text-muted-color)">#{{ page.page_number }}</div>
         </div>
       </div>
+      <div v-else class="text-(--p-text-muted-color)">尚未有頁面</div>
     </template>
   </Card>
 </template>
