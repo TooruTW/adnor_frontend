@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import Card from 'primevue/card'
-import { fetchAllChapters } from '@/api'
+import { useChapterStore } from '@/stores/chapter'
 import AddChapterDialogTrigger from './AddChapterDialogTrigger.vue'
 import ChapterDetailEditCard from './ChapterDetailEditCard.vue'
 import ChapterDetailReadCard from './ChapterDetailReadCard.vue'
@@ -10,8 +11,9 @@ import type { ChapterData } from './CONSTANTS/FAKE_DATA'
 
 const route = useRoute()
 const router = useRouter()
+const chapterStore = useChapterStore()
+const { chapters } = storeToRefs(chapterStore)
 
-const chapters = ref<ChapterData[]>([])
 const activeChapterId = ref<string | null>(null)
 const isEditingDetail = ref(false)
 const draftChapter = ref<ChapterData | null>(null)
@@ -30,10 +32,7 @@ function discardEdit() {
 }
 
 async function getAllChapters() {
-  const result = await fetchAllChapters()
-  if (result.ok) {
-    chapters.value = result.data as ChapterData[]
-  }
+  const result = await chapterStore.fetchChapters()
   console.log('chapters table get result:', result)
   return result
 }
@@ -77,7 +76,7 @@ function saveEdit() {
   if (idx === -1) return
   const at = new Date().toISOString().slice(0, 10)
   const saved = structuredClone(toRaw(draftChapter.value))
-  saved.chapter_updated_at = at
+  saved.last_update = at
   chapters.value = chapters.value.map((c, i) => (i === idx ? saved : c))
   discardEdit()
 }
@@ -140,7 +139,7 @@ function chapterCardPt(chapterId: string) {
         <template #content>
           <div class="flex flex-col gap-1">
             <p class="mb-1 font-medium">{{ ch.chapter_name }}</p>
-            <p class="text-xs self-end text-(--p-text-muted-color)">{{ ch.chapter_updated_at }}</p>
+            <p class="text-xs self-end text-(--p-text-muted-color)">{{ ch.last_update }}</p>
           </div>
         </template>
       </Card>

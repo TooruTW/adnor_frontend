@@ -62,7 +62,10 @@ export async function createChapter(input: ChapterCreateInput): Promise<CreateCh
 }
 
 export async function fetchAllChapters(): Promise<FetchAllChaptersResult> {
-  const { data, error } = await supabase.from('chapters').select('*')
+  const { data, error } = await supabase
+    .from('chapters')
+    .select('*')
+    .order('chapter_number', { ascending: true })
 
   if (error) {
     return { ok: false, message: error.message }
