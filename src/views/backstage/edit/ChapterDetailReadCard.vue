@@ -23,7 +23,7 @@ const emit = defineEmits<{
         <div class="flex shrink-0 flex-col items-end gap-2">
           <div class="flex flex-col items-end">
             <span class="mb-1 text-sm font-medium text-(--p-text-muted-color)">
-              last updated: {{ chapter.chapter_updated_at }}
+              last updated: {{ chapter.last_update }}
             </span>
             <span class="text-sm font-medium text-(--p-text-muted-color)">
               chapter_id: {{ chapter.chapter_id }}

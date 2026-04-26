@@ -9,8 +9,9 @@ export type ChapterData = {
   chapter_number: number
   chapter_name: string
   chapter_description: string
-  chapter_updated_at: string
   chapter_pages: pageData[]
+  last_update: string
+  release_date: string
 }
 
 const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
@@ -19,7 +20,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 1,
     chapter_name: 'Chapter 1',
     chapter_description: 'Chapter 1 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '1',
@@ -34,7 +36,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 2,
     chapter_name: 'Chapter 2',
     chapter_description: 'Chapter 2 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '2',
@@ -55,7 +58,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 3,
     chapter_name: 'Chapter 3',
     chapter_description: 'Chapter 3 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '4',
@@ -71,7 +75,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 4,
     chapter_name: 'Chapter 4',
     chapter_description: 'Chapter 4 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '5',
@@ -93,7 +98,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 5,
     chapter_name: 'Chapter 5',
     chapter_description: 'Chapter 5 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '7',
@@ -108,7 +114,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 6,
     chapter_name: 'Chapter 6',
     chapter_description: 'Chapter 6 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '8',
@@ -129,7 +136,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 7,
     chapter_name: 'Chapter 7',
     chapter_description: 'Chapter 7 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '10',
@@ -144,7 +152,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 8,
     chapter_name: 'Chapter 8',
     chapter_description: 'Chapter 8 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '11',
@@ -165,7 +174,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 9,
     chapter_name: 'Chapter 9',
     chapter_description: 'Chapter 9 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '13',
@@ -180,7 +190,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 10,
     chapter_name: 'Chapter 10',
     chapter_description: 'Chapter 10 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '14',
@@ -201,7 +212,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 11,
     chapter_name: 'Chapter 11',
     chapter_description: 'Chapter 11 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '16',
@@ -216,7 +228,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 12,
     chapter_name: 'Chapter 12',
     chapter_description: 'Chapter 12 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '17',
@@ -237,7 +250,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 13,
     chapter_name: 'Chapter 13',
     chapter_description: 'Chapter 13 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '19',
@@ -252,7 +266,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 14,
     chapter_name: 'Chapter 14',
     chapter_description: 'Chapter 14 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '20',
@@ -273,7 +288,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 15,
     chapter_name: 'Chapter 15',
     chapter_description: 'Chapter 15 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '22',
@@ -288,7 +304,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 16,
     chapter_name: 'Chapter 16',
     chapter_description: 'Chapter 16 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '23',
@@ -309,7 +326,8 @@ const FAKE_CHAPTER_DATA_ARRAY: ChapterData[] = [
     chapter_number: 17,
     chapter_name: 'Chapter 17',
     chapter_description: 'Chapter 17 description',
-    chapter_updated_at: '2026-04-04',
+    last_update: '2026-04-04',
+    release_date: '2026-04-04',
     chapter_pages: [
       {
         page_id: '25',

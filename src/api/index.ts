@@ -3,5 +3,11 @@ export { testSupabaseConnection } from './testSupabaseConnection'
 export type { TestSupabaseConnectionResult } from './testSupabaseConnection'
 export { signInWithEmailPassword } from './auth'
 export type { SignInWithPasswordResult } from './auth'
-export { createChapter, fetchBookOptions } from './chapter'
-export type { BookOption, ChapterCreateInput, CreateChapterResult, FetchBookOptionsResult } from './chapter'
+export { createChapter, fetchAllChapters, fetchBookOptions } from './chapter'
+export type {
+  BookOption,
+  ChapterCreateInput,
+  CreateChapterResult,
+  FetchAllChaptersResult,
+  FetchBookOptionsResult,
+} from './chapter'

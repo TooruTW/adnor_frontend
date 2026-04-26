@@ -16,6 +16,7 @@ type FailResult = { ok: false; message: string }
 
 export type FetchBookOptionsResult = OkResult<BookOption[]> | FailResult
 export type CreateChapterResult = OkResult<{ chapter_id?: string }> | FailResult
+export type FetchAllChaptersResult = OkResult<Record<string, unknown>[]> | FailResult
 
 export async function fetchBookOptions(): Promise<FetchBookOptionsResult> {
   const { data, error } = await supabase
@@ -58,4 +59,14 @@ export async function createChapter(input: ChapterCreateInput): Promise<CreateCh
     ok: true,
     data: { chapter_id: typeof data?.chapter_id === 'string' ? data.chapter_id : undefined },
   }
+}
+
+export async function fetchAllChapters(): Promise<FetchAllChaptersResult> {
+  const { data, error } = await supabase.from('chapters').select('*')
+
+  if (error) {
+    return { ok: false, message: error.message }
+  }
+
+  return { ok: true, data: (data ?? []) as Record<string, unknown>[] }
 }

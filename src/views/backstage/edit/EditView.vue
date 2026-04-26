@@ -2,15 +2,16 @@
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Card from 'primevue/card'
+import { fetchAllChapters } from '@/api'
 import AddChapterDialogTrigger from './AddChapterDialogTrigger.vue'
 import ChapterDetailEditCard from './ChapterDetailEditCard.vue'
 import ChapterDetailReadCard from './ChapterDetailReadCard.vue'
-import { FAKE_CHAPTER_DATA_ARRAY, type ChapterData } from './CONSTANTS/FAKE_DATA'
+import type { ChapterData } from './CONSTANTS/FAKE_DATA'
 
 const route = useRoute()
 const router = useRouter()
 
-const chapters = ref<ChapterData[]>(structuredClone(FAKE_CHAPTER_DATA_ARRAY))
+const chapters = ref<ChapterData[]>([])
 const activeChapterId = ref<string | null>(null)
 const isEditingDetail = ref(false)
 const draftChapter = ref<ChapterData | null>(null)
@@ -28,8 +29,18 @@ function discardEdit() {
   draftChapter.value = null
 }
 
-onMounted(() => {
+async function getAllChapters() {
+  const result = await fetchAllChapters()
+  if (result.ok) {
+    chapters.value = result.data as ChapterData[]
+  }
+  console.log('chapters table get result:', result)
+  return result
+}
+
+onMounted(async () => {
   activeChapterId.value = parseQueryChapterId()
+  await getAllChapters()
 })
 
 watch(
