@@ -43,7 +43,7 @@ function removePage(pageId: string) {
 </script>
 
 <template>
-  <Card class="h-full min-h-48 overflow-y-auto">
+  <Card class="h-full flex-1 flex flex-col overflow-y-auto">
     <template #title>
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="min-w-0 flex-1">
@@ -97,26 +97,35 @@ function removePage(pageId: string) {
     </template>
 
     <template #content>
-      <p class="max-w-150 mb-1 font-semibold">description:</p>
-      <Textarea
-        v-model="draft.chapter_description"
-        :rows="4"
-        class="max-w-150 w-full resize-y"
-        @click.stop
-      />
+      <div class="flex flex-col gap-4">
+        <div class="w-full max-w-150">
+          <p class="mb-1 font-semibold">description:</p>
+          <Textarea
+            v-model="draft.chapter_description"
+            :rows="4"
+            class="w-full resize-y"
+            @click.stop
+          />
+        </div>
 
-      <div class="mt-4 flex w-full flex-wrap items-start gap-4">
-        <div class="flex min-w-0 flex-1 flex-col gap-4">
+        <div class="flex items-center justify-between gap-3" @click.stop>
+          <p class="text-sm font-semibold text-(--p-text-muted-color)">pages</p>
+          <Button type="button" label="新增" icon="pi pi-plus" size="small" @click="addPage" />
+        </div>
+
+        <div class="grid w-full gap-4 grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
           <div
             v-for="page in draft.chapter_pages"
             :key="page.page_id"
-            class="border-(--p-border-color) relative isolate min-w-100 rounded-md border p-4"
+            class="border-(--p-border-color) relative isolate rounded-md border p-4 flex flex-col gap-2"
           >
-            <img
-              src="https://picsum.photos/960/1440"
-              alt="page image"
-              class="relative z-0 block h-auto w-full"
-            />
+            <div class="min-h-0 flex-1 flex-center">
+              <img
+                src="https://picsum.photos/960/1440"
+                alt="page image"
+                class="relative z-0 h-auto max-h-[60vh] w-full object-contain"
+              />
+            </div>
             <div class="absolute inset-e-3 top-3 z-20">
               <Button
                 type="button"
@@ -129,9 +138,6 @@ function removePage(pageId: string) {
             </div>
             <span class="relative z-0 text-(--p-text-muted-color)">#{{ page.page_number }}</span>
           </div>
-        </div>
-        <div class="shrink-0" @click.stop>
-          <Button type="button" label="新增" icon="pi pi-plus" size="small" @click="addPage" />
         </div>
       </div>
     </template>

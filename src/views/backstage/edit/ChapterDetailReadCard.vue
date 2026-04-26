@@ -47,9 +47,9 @@ const emit = defineEmits<{
         <div
           v-for="page in chapter.chapter_pages"
           :key="page.page_id"
-          class="border-(--p-border-color) h-[70vh]  rounded-md border p-4 flex flex-col items-stretch"
+          class="border-(--p-border-color) h-[70vh] rounded-md border p-4 flex flex-col items-stretch"
         >
-          <div class="flex-1 min-h-0 flex-center" >
+          <div class="flex-1 min-h-0 flex-center">
             <img
               src="https://picsum.photos/960/1440"
               alt="page image"
