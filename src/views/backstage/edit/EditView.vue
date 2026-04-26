@@ -5,7 +5,7 @@ import Button from 'primevue/button'
 import Card from 'primevue/card'
 import ChapterDetailEditCard from './ChapterDetailEditCard.vue'
 import ChapterDetailReadCard from './ChapterDetailReadCard.vue'
-import { FAKE_CHAPTER_DATA_ARRAY, type ChapterData } from './FAKE_DATA'
+import { FAKE_CHAPTER_DATA_ARRAY, type ChapterData } from './CONSTANTS/FAKE_DATA'
 
 const route = useRoute()
 const router = useRouter()
@@ -147,7 +147,7 @@ function chapterCardPt(chapterId: string) {
           @click="addChapter"
         />
       </div>
-
+      <!-- chapter card detail and operations -->
       <Card
         v-for="ch in chapters"
         :key="ch.chapter_id"
@@ -171,7 +171,7 @@ function chapterCardPt(chapterId: string) {
       </Card>
     </aside>
 
-    <main v-if="showDetailCard" class="min-w-0 flex-1">
+    <main v-if="showDetailCard" class="min-w-0 flex-1 flex items-stretch">
       <ChapterDetailReadCard
         v-if="activeChapter && !isEditingDetail"
         :chapter="activeChapter"

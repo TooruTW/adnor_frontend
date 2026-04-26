@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Card from 'primevue/card'
-import type { ChapterData } from './FAKE_DATA'
+import type { ChapterData } from './CONSTANTS/FAKE_DATA'
 
 defineProps<{
   chapter: ChapterData
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <Card class="h-full min-h-48 overflow-y-auto">
+  <Card class="h-full flex-1 flex flex-col overflow-y-auto">
     <template #title>
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="min-w-0 flex-1">
@@ -43,14 +43,20 @@ const emit = defineEmits<{
         <span>{{ chapter.chapter_description }}</span>
       </p>
 
-      <div class="gap-4 mt-4 w-full flex-center-column">
+      <div class="gap-4 mt-4 w-full grid grid-cols-2">
         <div
           v-for="page in chapter.chapter_pages"
           :key="page.page_id"
-          class="border-(--p-border-color) min-w-100 rounded-md border p-4"
+          class="border-(--p-border-color) h-[70vh]  rounded-md border p-4 flex flex-col items-stretch"
         >
-          <img src="https://picsum.photos/960/1440" alt="page image" class="h-auto w-full" />
-          <span class="text-(--p-text-muted-color)">#{{ page.page_number }}</span>
+          <div class="flex-1 min-h-0 flex-center" >
+            <img
+              src="https://picsum.photos/960/1440"
+              alt="page image"
+              class="h-full object-contain"
+            />
+          </div>
+          <div class="text-(--p-text-muted-color)">#{{ page.page_number }}</div>
         </div>
       </div>
     </template>

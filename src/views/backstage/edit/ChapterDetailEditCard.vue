@@ -4,7 +4,7 @@ import Card from 'primevue/card'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
-import type { ChapterData } from './FAKE_DATA'
+import type { ChapterData } from './CONSTANTS/FAKE_DATA'
 
 const draft = defineModel<ChapterData>({ required: true })
 
